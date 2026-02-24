@@ -159,10 +159,10 @@ export default async function ApplicationDetail({
           )}
 
           {/* References */}
-          {app.references && (app.references as Array<Record<string, string>>).length > 0 && (
+          {app.applicant_references && (app.applicant_references as Array<Record<string, string>>).length > 0 && (
             <section className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="font-bold text-lg mb-4 border-b pb-2">References</h2>
-              {(app.references as Array<Record<string, string>>).map((ref, i) => (
+              {(app.applicant_references as Array<Record<string, string>>).map((ref, i) => (
                 <div key={i} className="text-sm mb-3">
                   <span className="font-medium">{ref.name}</span> — {ref.relationship}
                   <br />

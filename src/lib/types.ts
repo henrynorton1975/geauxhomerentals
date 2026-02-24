@@ -118,7 +118,7 @@ export interface Application {
   supervisor_phone: string;
   supervisor_email: string | null;
   previous_employment: Employment[];
-  references: Reference[];
+  applicant_references: Reference[];
   has_pets: boolean;
   pets: Pet[];
   screening_questions: ScreeningQuestions;
