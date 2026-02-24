@@ -123,7 +123,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
       // Section 7
       previous_employment: prevEmployment,
       // Section 8
-      applicant_references: references,
+      references: references,
       // Section 9
       has_pets: hasPets,
       pets: pets,
