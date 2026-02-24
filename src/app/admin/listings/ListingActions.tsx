@@ -24,7 +24,7 @@ export default function ListingActions({ listingId, currentStatus }: { listingId
           : "bg-green-50 text-green-600 hover:bg-green-100"
       }`}
     >
-      {currentStatus === "active" ? "Deactivate" : "Activate"}
+      {currentStatus === "active" ? "Archive" : "Acivate"}
     </button>
   );
 }
