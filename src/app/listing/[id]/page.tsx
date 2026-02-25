@@ -6,6 +6,8 @@ import PhotoGallery from "./PhotoGallery";
 
 export const revalidate = 60;
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export default async function ListingPage({
   params,
 }: {
@@ -13,10 +15,11 @@ export default async function ListingPage({
 }) {
   const { id } = await params;
 
+  const column = UUID_REGEX.test(id) ? "id" : "slug";
   const { data: listing } = await supabase
     .from("listings")
     .select("*")
-    .eq("id", id)
+    .eq(column, id)
     .eq("status", "active")
     .single();
 
@@ -128,7 +131,7 @@ export default async function ListingPage({
               </div>
 
               <Link
-                href={`/listing/${l.id}/apply`}
+                href={`/listing/${l.slug || l.id}/apply`}
                 className="block w-full text-center text-white font-bold py-3 rounded-lg mt-6 text-lg hover:opacity-90 transition-opacity"
                 style={{ backgroundColor: "#D4A843" }}
               >

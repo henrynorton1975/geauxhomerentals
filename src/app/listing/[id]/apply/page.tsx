@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ApplicationForm from "./ApplicationForm";
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export default async function ApplyPage({
   params,
 }: {
@@ -10,10 +12,11 @@ export default async function ApplyPage({
 }) {
   const { id } = await params;
 
+  const column = UUID_REGEX.test(id) ? "id" : "slug";
   const { data: listing } = await supabase
     .from("listings")
     .select("*")
-    .eq("id", id)
+    .eq(column, id)
     .eq("status", "active")
     .single();
 
@@ -28,7 +31,7 @@ export default async function ApplyPage({
           <Link href="/" className="text-xl font-bold" style={{ color: "#D4A843" }}>
             Geaux Home Rentals
           </Link>
-          <Link href={`/listing/${id}`} className="text-gray-300 hover:text-white text-sm">
+          <Link href={`/listing/${listing.slug || listing.id}`} className="text-gray-300 hover:text-white text-sm">
             ← Back to Listing
           </Link>
         </div>
@@ -52,7 +55,7 @@ export default async function ApplyPage({
           Please fill out all required fields. Fields marked with * are required.
         </p>
 
-        <ApplicationForm listingId={id} />
+        <ApplicationForm listingId={listing.id} />
       </main>
     </div>
   );

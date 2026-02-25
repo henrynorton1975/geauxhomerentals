@@ -42,6 +42,14 @@ function RequiredStar() {
   return <span className="text-red-500 ml-1">*</span>;
 }
 
+function formatPhone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 10);
+  if (digits.length === 0) return "";
+  if (digits.length <= 3) return `(${digits}`;
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
 export default function ApplicationForm({ listingId }: { listingId: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -195,7 +203,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Phone Number<RequiredStar /></label>
-          <input type="tel" name="phone" required />
+          <input type="tel" name="phone" required onChange={(e) => { e.target.value = formatPhone(e.target.value); }} />
         </div>
         <div>
           <label>Desired Move-in Date<RequiredStar /></label>
@@ -286,7 +294,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Guarantor Phone</label>
-          <input type="tel" name="guarantor_phone" />
+          <input type="tel" name="guarantor_phone" onChange={(e) => { e.target.value = formatPhone(e.target.value); }} />
         </div>
       </div>
 
@@ -345,7 +353,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Landlord Phone<RequiredStar /></label>
-          <input type="tel" name="current_landlord_phone" required />
+          <input type="tel" name="current_landlord_phone" required onChange={(e) => { e.target.value = formatPhone(e.target.value); }} />
         </div>
       </div>
 
@@ -392,7 +400,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             <div><label>Monthly Rent</label><input type="number" step="0.01" value={res.monthly_rent || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], monthly_rent: e.target.value }; setPrevResidences(u); }} /></div>
             <div><label>Landlord Name</label><input type="text" value={res.landlord_name || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], landlord_name: e.target.value }; setPrevResidences(u); }} /></div>
             <div><label>Landlord Email</label><input type="email" value={res.landlord_email || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], landlord_email: e.target.value }; setPrevResidences(u); }} /></div>
-            <div><label>Landlord Phone</label><input type="tel" value={res.landlord_phone || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], landlord_phone: e.target.value }; setPrevResidences(u); }} /></div>
+            <div><label>Landlord Phone</label><input type="tel" value={res.landlord_phone || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], landlord_phone: formatPhone(e.target.value) }; setPrevResidences(u); }} /></div>
           </div>
         </div>
       ))}
@@ -439,7 +447,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Supervisor Phone<RequiredStar /></label>
-          <input type="tel" name="supervisor_phone" required />
+          <input type="tel" name="supervisor_phone" required onChange={(e) => { e.target.value = formatPhone(e.target.value); }} />
         </div>
         <div>
           <label>Supervisor Email</label>
@@ -461,7 +469,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             <div><label>Date From</label><input type="text" placeholder="MM/YYYY" value={emp.date_from || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], date_from: e.target.value }; setPrevEmployment(u); }} /></div>
             <div><label>Date To</label><input type="text" placeholder="MM/YYYY" value={emp.date_to || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], date_to: e.target.value }; setPrevEmployment(u); }} /></div>
             <div><label>Supervisor Name</label><input type="text" value={emp.supervisor_name || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], supervisor_name: e.target.value }; setPrevEmployment(u); }} /></div>
-            <div><label>Supervisor Phone</label><input type="tel" value={emp.supervisor_phone || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], supervisor_phone: e.target.value }; setPrevEmployment(u); }} /></div>
+            <div><label>Supervisor Phone</label><input type="tel" value={emp.supervisor_phone || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], supervisor_phone: formatPhone(e.target.value) }; setPrevEmployment(u); }} /></div>
             <div><label>Supervisor Email</label><input type="email" value={emp.supervisor_email || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], supervisor_email: e.target.value }; setPrevEmployment(u); }} /></div>
           </div>
         </div>
@@ -480,7 +488,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
           <p className="font-medium mb-3">Reference {i + 1}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div><label>Name<RequiredStar /></label><input type="text" value={ref.name} required onChange={(e) => { const u = [...references]; u[i] = { ...u[i], name: e.target.value }; setReferences(u); }} /></div>
-            <div><label>Phone<RequiredStar /></label><input type="tel" value={ref.phone} required onChange={(e) => { const u = [...references]; u[i] = { ...u[i], phone: e.target.value }; setReferences(u); }} /></div>
+            <div><label>Phone<RequiredStar /></label><input type="tel" value={ref.phone} required onChange={(e) => { const u = [...references]; u[i] = { ...u[i], phone: formatPhone(e.target.value) }; setReferences(u); }} /></div>
             <div><label>Email</label><input type="email" value={ref.email} onChange={(e) => { const u = [...references]; u[i] = { ...u[i], email: e.target.value }; setReferences(u); }} /></div>
             <div><label>Relationship<RequiredStar /></label><input type="text" value={ref.relationship} required onChange={(e) => { const u = [...references]; u[i] = { ...u[i], relationship: e.target.value }; setReferences(u); }} /></div>
             <div><label>Length of Acquaintance</label><input type="text" value={ref.length} onChange={(e) => { const u = [...references]; u[i] = { ...u[i], length: e.target.value }; setReferences(u); }} /></div>

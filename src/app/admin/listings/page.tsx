@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { Listing } from "@/lib/types";
-import ListingActions from "./ListingActions";
+import ListingsFilter from "./ListingsFilter";
 
 export const revalidate = 0;
 
@@ -32,29 +32,7 @@ export default async function AdminListings() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
-          {(listings as Listing[]).map((listing) => (
-            <div key={listing.id} className="bg-white rounded-xl shadow-sm p-4 flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-3">
-                  <h3 className="font-bold">{listing.address}</h3>
-                  <span className={`badge badge-${listing.status}`}>
-                    {listing.status}
-                  </span>
-                </div>
-                <p className="text-gray-500 text-sm">
-                  {listing.city}, {listing.state} {listing.zip} · {listing.bedrooms}bd / {listing.bathrooms}ba · ${Number(listing.monthly_rent).toLocaleString()}/mo
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <Link href={`/listing/${listing.id}`} className="text-sm text-gray-500 hover:text-gray-700">
-                  View
-                </Link>
-                <ListingActions listingId={listing.id} currentStatus={listing.status} />
-              </div>
-            </div>
-          ))}
-        </div>
+        <ListingsFilter listings={listings as Listing[]} />
       )}
     </div>
   );

@@ -42,7 +42,7 @@ export default async function HomePage() {
             {(listings as Listing[]).map((listing) => (
               <Link
                 key={listing.id}
-                href={`/listing/${listing.id}`}
+                href={`/listing/${listing.slug || listing.id}`}
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
               >
                 {/* Photo */}
