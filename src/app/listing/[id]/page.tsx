@@ -55,6 +55,21 @@ export default async function ListingPage({
               {l.city}, {l.state} {l.zip}
             </p>
 
+            {(l.contact_phone || l.contact_email) && (
+              <div className="flex flex-wrap gap-4 mt-3 text-sm">
+                {l.contact_phone && (
+                  <a href={`tel:${l.contact_phone}`} className="text-blue-600 hover:underline">
+                    {l.contact_phone}
+                  </a>
+                )}
+                {l.contact_email && (
+                  <a href={`mailto:${l.contact_email}`} className="text-blue-600 hover:underline">
+                    {l.contact_email}
+                  </a>
+                )}
+              </div>
+            )}
+
             <div className="flex flex-wrap gap-6 mt-6 text-lg">
               <div>
                 <span className="font-bold">{l.bedrooms}</span>{" "}

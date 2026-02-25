@@ -15,6 +15,8 @@ export interface Listing {
   description: string | null;
   utilities_included: string[] | null;
   photos: string[] | null;
+  contact_phone: string | null;
+  contact_email: string | null;
   slug: string | null;
   status: string;
   created_at: string;

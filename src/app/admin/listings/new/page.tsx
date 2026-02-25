@@ -30,6 +30,8 @@ export default function NewListing() {
       available_date: get("available_date"),
       pet_policy: get("pet_policy"),
       description: get("description") || null,
+      contact_phone: get("contact_phone") || null,
+      contact_email: get("contact_email") || null,
       status: "active",
     };
 
@@ -118,6 +120,14 @@ export default function NewListing() {
               <option value="Not Allowed">Not Allowed</option>
               <option value="Case by Case">Case by Case</option>
             </select>
+          </div>
+          <div>
+            <label>Contact Phone</label>
+            <input type="tel" name="contact_phone" placeholder="(555) 555-5555" />
+          </div>
+          <div>
+            <label>Contact Email</label>
+            <input type="email" name="contact_email" placeholder="email@example.com" />
           </div>
           <div className="md:col-span-2">
             <label>Description</label>
