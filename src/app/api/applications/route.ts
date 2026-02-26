@@ -1,8 +1,11 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/api-auth";
 
 // GET /api/applications - Get all applications (filterable)
 export async function GET(request: NextRequest) {
+  const authError = requireAuth(request);
+  if (authError) return authError;
   const { searchParams } = new URL(request.url);
   const status = searchParams.get("status");
   const listing_id = searchParams.get("listing_id");

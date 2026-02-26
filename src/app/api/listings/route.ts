@@ -1,14 +1,25 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/api-auth";
 
 // GET /api/listings - Get all listings (filterable by status)
+// ?public=true bypasses auth and returns only active listings
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
+  const isPublic = searchParams.get("public") === "true";
+
+  if (!isPublic) {
+    const authError = requireAuth(request);
+    if (authError) return authError;
+  }
+
   const status = searchParams.get("status");
 
   let query = supabase.from("listings").select("*").order("created_at", { ascending: false });
 
-  if (status) {
+  if (isPublic) {
+    query = query.eq("status", "active");
+  } else if (status) {
     query = query.eq("status", status);
   }
 
