@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import AddressAutocomplete from "@/components/AddressAutocomplete";
 
 const SCREENING_QUESTIONS = [
   { key: "evicted", text: "Have you ever been evicted or asked to move from any tenancy?" },
@@ -57,6 +58,17 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
 
   // Section 2: Additional Occupants
   const [occupants, setOccupants] = useState<Array<{ name: string; email: string; relationship: string }>>([]);
+
+  // Section 4: Current Residence address fields (for autocomplete)
+  const [currentCity, setCurrentCity] = useState("");
+  const [currentState, setCurrentState] = useState("");
+  const [currentZip, setCurrentZip] = useState("");
+
+  const handleCurrentPlaceSelect = useCallback((addr: { street: string; city: string; state: string; zip: string }) => {
+    setCurrentCity(addr.city);
+    setCurrentState(addr.state);
+    setCurrentZip(addr.zip);
+  }, []);
 
   // Section 5: Previous Residences
   const [prevResidences, setPrevResidences] = useState<Array<Record<string, string>>>([]);
@@ -312,15 +324,15 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div className="md:col-span-2">
           <label>Street Address<RequiredStar /></label>
-          <input type="text" name="current_address" required />
+          <AddressAutocomplete name="current_address" required onPlaceSelect={handleCurrentPlaceSelect} />
         </div>
         <div>
           <label>City<RequiredStar /></label>
-          <input type="text" name="current_city" required />
+          <input type="text" name="current_city" required value={currentCity} onChange={(e) => setCurrentCity(e.target.value)} />
         </div>
         <div>
           <label>State<RequiredStar /></label>
-          <select name="current_state" required>
+          <select name="current_state" required value={currentState} onChange={(e) => setCurrentState(e.target.value)}>
             <option value="">Select...</option>
             {US_STATES.map((s) => (
               <option key={s} value={s}>{s}</option>
@@ -329,7 +341,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Zip Code<RequiredStar /></label>
-          <input type="text" name="current_zip" required />
+          <input type="text" name="current_zip" required value={currentZip} onChange={(e) => setCurrentZip(e.target.value)} />
         </div>
         <div>
           <label>Date From (Month/Year)<RequiredStar /></label>
@@ -381,7 +393,11 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             </div>
             <div className="md:col-span-2">
               <label>Street Address</label>
-              <input type="text" value={res.address || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], address: e.target.value }; setPrevResidences(u); }} />
+              <AddressAutocomplete
+                value={res.address || ""}
+                onChange={(val) => { const u = [...prevResidences]; u[i] = { ...u[i], address: val }; setPrevResidences(u); }}
+                onPlaceSelect={(addr) => { const u = [...prevResidences]; u[i] = { ...u[i], address: addr.street, city: addr.city, state: addr.state, zip: addr.zip }; setPrevResidences(u); }}
+              />
             </div>
             <div>
               <label>City</label>

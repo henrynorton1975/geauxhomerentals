@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Script from "next/script";
 import ApplicationForm from "./ApplicationForm";
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -24,8 +25,16 @@ export default async function ApplyPage({
     notFound();
   }
 
+  const googleApiKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY;
+
   return (
     <div className="min-h-screen">
+      {googleApiKey && (
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&libraries=places`}
+          strategy="lazyOnload"
+        />
+      )}
       <header className="bg-[#1a1a2e] text-white">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold" style={{ color: "#D4A843" }}>
