@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import PhotoUploader, { PhotoUploaderHandle } from "@/components/PhotoUploader";
 
 export default function NewListing() {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const photoUploaderRef = useRef<PhotoUploaderHandle>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -36,6 +38,7 @@ export default function NewListing() {
     };
 
     try {
+      // 1. Create the listing
       const res = await fetch("/api/listings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,6 +46,19 @@ export default function NewListing() {
       });
 
       if (!res.ok) throw new Error("Failed to create listing");
+      const listing = await res.json();
+
+      // 2. Upload photos if any
+      if (photoUploaderRef.current) {
+        const photoUrls = await photoUploaderRef.current.uploadAll(listing.id);
+        if (photoUrls.length > 0) {
+          await fetch(`/api/listings/${listing.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ photos: photoUrls }),
+          });
+        }
+      }
 
       router.push("/admin/listings");
       router.refresh();
@@ -134,6 +150,8 @@ export default function NewListing() {
             <textarea name="description" rows={4} placeholder="Property features, neighborhood info, notes..." />
           </div>
         </div>
+
+        <PhotoUploader ref={photoUploaderRef} />
 
         <div className="flex gap-4">
           <button

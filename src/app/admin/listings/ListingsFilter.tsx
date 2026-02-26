@@ -75,6 +75,9 @@ export default function ListingsFilter({ listings }: { listings: Listing[] }) {
                 </p>
               </div>
               <div className="flex items-center gap-3">
+                <Link href={`/admin/listings/${listing.id}/edit`} className="text-sm text-blue-600 hover:text-blue-800">
+                  Edit
+                </Link>
                 <Link href={`/listing/${listing.id}`} className="text-sm text-gray-500 hover:text-gray-700">
                   View
                 </Link>
