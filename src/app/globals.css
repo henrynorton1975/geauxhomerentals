@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap');
 
 :root {
   --geaux-gold: #D4A843;
@@ -6,10 +7,17 @@
   --geaux-navy: #16213e;
   --geaux-blue: #0f3460;
   --geaux-accent: #e94560;
+  --color-navy: #1B2B4B;
+  --color-gold: #C9A84C;
+  --color-light-gray: #F8F9FA;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #1a1a2e;
   background: #f8f9fa;
 }
@@ -71,4 +79,17 @@ label {
   height: 10px;
   border-radius: 50%;
   background: #ef4444;
+}
+
+.btn-navy-gold {
+  background-color: var(--color-navy);
+  color: var(--color-gold);
+  transition: background-color 0.2s;
+}
+.btn-navy-gold:hover {
+  background-color: #2a3d63;
+}
+
+.hero-cta:hover {
+  opacity: 0.9;
 }
