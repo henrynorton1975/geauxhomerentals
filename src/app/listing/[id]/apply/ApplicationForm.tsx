@@ -318,7 +318,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div className="md:col-span-2">
           <label>Street Address<RequiredStar /></label>
-          <input type="text" name="current_address" required value={currentAddress} onChange={(e) => setCurrentAddress(e.target.value)} />
+          <input type="text" name="current_address" required value={currentAddress} onChange={(e) => setCurrentAddress(e.target.value)} autoComplete="off" />
         </div>
         <div>
           <label>City<RequiredStar /></label>
@@ -387,7 +387,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             </div>
             <div className="md:col-span-2">
               <label>Street Address</label>
-              <input type="text" value={res.address || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], address: e.target.value }; setPrevResidences(u); }} />
+              <input type="text" value={res.address || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], address: e.target.value }; setPrevResidences(u); }} autoComplete="off" />
             </div>
             <div>
               <label>City</label>
