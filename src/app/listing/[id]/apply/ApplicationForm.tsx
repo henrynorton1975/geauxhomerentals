@@ -59,6 +59,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
   const [occupants, setOccupants] = useState<Array<{ name: string; email: string; relationship: string }>>([]);
 
   // Section 4: Current Residence address fields
+  const [currentAddress, setCurrentAddress] = useState("");
   const [currentCity, setCurrentCity] = useState("");
   const [currentState, setCurrentState] = useState("");
   const [currentZip, setCurrentZip] = useState("");
@@ -317,7 +318,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div className="md:col-span-2">
           <label>Street Address<RequiredStar /></label>
-          <input type="text" name="current_address" required />
+          <input type="text" name="current_address" required value={currentAddress} onChange={(e) => setCurrentAddress(e.target.value)} />
         </div>
         <div>
           <label>City<RequiredStar /></label>
