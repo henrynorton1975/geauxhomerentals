@@ -42,6 +42,13 @@ function RequiredStar() {
   return <span className="text-red-500 ml-1">*</span>;
 }
 
+function formatDate(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 6);
+  if (digits.length === 0) return "";
+  if (digits.length <= 2) return digits;
+  return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+}
+
 function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, "").slice(0, 10);
   if (digits.length === 0) return "";
@@ -339,7 +346,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Date From (Month/Year)<RequiredStar /></label>
-          <input type="text" placeholder="MM/YYYY" name="current_date_from" required />
+          <input type="text" placeholder="MM/YYYY" name="current_date_from" required onChange={(e) => { e.target.value = formatDate(e.target.value); }} />
         </div>
         <div>
           <label>Date To (Month/Year or Present)<RequiredStar /></label>
@@ -401,7 +408,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
               </select>
             </div>
             <div><label>Zip Code</label><input type="text" value={res.zip || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], zip: e.target.value }; setPrevResidences(u); }} /></div>
-            <div><label>Date From</label><input type="text" placeholder="MM/YYYY" value={res.date_from || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], date_from: e.target.value }; setPrevResidences(u); }} /></div>
+            <div><label>Date From</label><input type="text" placeholder="MM/YYYY" value={res.date_from || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], date_from: formatDate(e.target.value) }; setPrevResidences(u); }} /></div>
             <div><label>Date To</label><input type="text" placeholder="MM/YYYY or Present" value={res.date_to || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], date_to: e.target.value }; setPrevResidences(u); }} /></div>
             <div><label>Monthly Rent</label><input type="number" step="0.01" value={res.monthly_rent || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], monthly_rent: e.target.value }; setPrevResidences(u); }} /></div>
             <div><label>Landlord Name</label><input type="text" value={res.landlord_name || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], landlord_name: e.target.value }; setPrevResidences(u); }} /></div>
@@ -441,19 +448,19 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div>
           <label>Date From<RequiredStar /></label>
-          <input type="text" placeholder="MM/YYYY" name="employment_date_from" required />
+          <input type="text" placeholder="MM/YYYY" name="employment_date_from" required onChange={(e) => { e.target.value = formatDate(e.target.value); }} />
         </div>
         <div>
           <label>Date To<RequiredStar /></label>
           <input type="text" name="employment_date_to" placeholder="MM/YYYY or Present" required />
         </div>
         <div>
-          <label>Supervisor Name<RequiredStar /></label>
-          <input type="text" name="supervisor_name" required />
+          <label>Supervisor Name</label>
+          <input type="text" name="supervisor_name" />
         </div>
         <div>
-          <label>Supervisor Phone<RequiredStar /></label>
-          <input type="tel" name="supervisor_phone" required onChange={(e) => { e.target.value = formatPhone(e.target.value); }} />
+          <label>Supervisor Phone</label>
+          <input type="tel" name="supervisor_phone" onChange={(e) => { e.target.value = formatPhone(e.target.value); }} />
         </div>
         <div>
           <label>Supervisor Email</label>
@@ -472,7 +479,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             <div><label>Employer Name</label><input type="text" value={emp.employer_name || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], employer_name: e.target.value }; setPrevEmployment(u); }} /></div>
             <div><label>Job Title</label><input type="text" value={emp.job_title || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], job_title: e.target.value }; setPrevEmployment(u); }} /></div>
             <div><label>Gross Monthly Income</label><input type="number" step="0.01" value={emp.gross_monthly_income || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], gross_monthly_income: e.target.value }; setPrevEmployment(u); }} /></div>
-            <div><label>Date From</label><input type="text" placeholder="MM/YYYY" value={emp.date_from || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], date_from: e.target.value }; setPrevEmployment(u); }} /></div>
+            <div><label>Date From</label><input type="text" placeholder="MM/YYYY" value={emp.date_from || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], date_from: formatDate(e.target.value) }; setPrevEmployment(u); }} /></div>
             <div><label>Date To</label><input type="text" placeholder="MM/YYYY" value={emp.date_to || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], date_to: e.target.value }; setPrevEmployment(u); }} /></div>
             <div><label>Supervisor Name</label><input type="text" value={emp.supervisor_name || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], supervisor_name: e.target.value }; setPrevEmployment(u); }} /></div>
             <div><label>Supervisor Phone</label><input type="tel" value={emp.supervisor_phone || ""} onChange={(e) => { const u = [...prevEmployment]; u[i] = { ...u[i], supervisor_phone: formatPhone(e.target.value) }; setPrevEmployment(u); }} /></div>
