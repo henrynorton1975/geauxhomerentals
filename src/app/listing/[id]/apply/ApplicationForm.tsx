@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import AddressAutocomplete from "@/components/AddressAutocomplete";
+import { useState } from "react";
 
 const SCREENING_QUESTIONS = [
   { key: "evicted", text: "Have you ever been evicted or asked to move from any tenancy?" },
@@ -59,16 +58,10 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
   // Section 2: Additional Occupants
   const [occupants, setOccupants] = useState<Array<{ name: string; email: string; relationship: string }>>([]);
 
-  // Section 4: Current Residence address fields (for autocomplete)
+  // Section 4: Current Residence address fields
   const [currentCity, setCurrentCity] = useState("");
   const [currentState, setCurrentState] = useState("");
   const [currentZip, setCurrentZip] = useState("");
-
-  const handleCurrentPlaceSelect = useCallback((addr: { street: string; city: string; state: string; zip: string }) => {
-    setCurrentCity(addr.city);
-    setCurrentState(addr.state);
-    setCurrentZip(addr.zip);
-  }, []);
 
   // Section 5: Previous Residences
   const [prevResidences, setPrevResidences] = useState<Array<Record<string, string>>>([]);
@@ -324,7 +317,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         </div>
         <div className="md:col-span-2">
           <label>Street Address<RequiredStar /></label>
-          <AddressAutocomplete name="current_address" required onPlaceSelect={handleCurrentPlaceSelect} />
+          <input type="text" name="current_address" required />
         </div>
         <div>
           <label>City<RequiredStar /></label>
@@ -393,11 +386,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             </div>
             <div className="md:col-span-2">
               <label>Street Address</label>
-              <AddressAutocomplete
-                value={res.address || ""}
-                onChange={(val) => { const u = [...prevResidences]; u[i] = { ...u[i], address: val }; setPrevResidences(u); }}
-                onPlaceSelect={(addr) => { const u = [...prevResidences]; u[i] = { ...u[i], address: addr.street, city: addr.city, state: addr.state, zip: addr.zip }; setPrevResidences(u); }}
-              />
+              <input type="text" value={res.address || ""} onChange={(e) => { const u = [...prevResidences]; u[i] = { ...u[i], address: e.target.value }; setPrevResidences(u); }} />
             </div>
             <div>
               <label>City</label>
