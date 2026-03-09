@@ -63,6 +63,7 @@ export default function ApplicationsList({ applications, listings }: Application
             const listing = app.listing as Record<string, unknown> | null;
             const screening = app.screening_questions as Record<string, { answer: boolean }>;
             const flagged = hasFlags(screening);
+            const lastEdited = app.last_edited_at as string | null;
 
             return (
               <Link
@@ -77,6 +78,11 @@ export default function ApplicationsList({ applications, listings }: Application
                       <span className={`badge badge-${(app.status as string).replace(" ", "-")}`}>
                         {STATUS_LABELS[app.status as string] || app.status as string}
                       </span>
+                      {lastEdited && (
+                        <span className="text-xs font-medium px-2 py-1 bg-blue-100 text-blue-700 rounded">
+                          ✏️ Edited {new Date(lastEdited).toLocaleDateString()}
+                        </span>
+                      )}
                       {flagged && (
                         <span className="flex items-center gap-1 text-red-500 text-xs font-medium">
                           <span className="flag-yes" /> Flags

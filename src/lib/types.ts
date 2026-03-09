@@ -131,6 +131,9 @@ export interface Application {
   signature_date: string;
   created_at: string;
   updated_at: string;
+  edit_token: string | null;
+  edit_token_expires_at: string | null;
+  last_edited_at: string | null;
   listing?: Listing;
 }
 
