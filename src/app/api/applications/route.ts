@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/api-auth";
-import { sendEmail, buildApplicationConfirmationEmail } from "@/lib/email";
 
 // GET /api/applications - Get all applications (filterable)
 export async function GET(request: NextRequest) {
@@ -48,22 +47,6 @@ export async function POST(request: NextRequest) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-  // Send confirmation email with edit link (fire-and-forget — don't block response)
-  const listing = data.listing as Record<string, string> | null;
-  const listingAddress = listing
-    ? `${listing.address}, ${listing.city}, ${listing.state} ${listing.zip}`
-    : "your selected property";
-
-  sendEmail({
-    to: data.email,
-    subject: "Your Rental Application Has Been Received — Geaux Home Rentals",
-    html: buildApplicationConfirmationEmail({
-      applicantName: data.full_name,
-      listingAddress,
-      editToken,
-    }),
-  }).catch((err) => console.error("[email] Failed to send confirmation:", err));
 
   return NextResponse.json(data, { status: 201 });
 }

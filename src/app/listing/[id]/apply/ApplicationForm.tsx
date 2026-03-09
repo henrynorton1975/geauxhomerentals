@@ -60,6 +60,7 @@ function formatPhone(value: string): string {
 export default function ApplicationForm({ listingId }: { listingId: string }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [editToken, setEditToken] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   // Section 2: Additional Occupants
@@ -169,6 +170,8 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
         throw new Error(data.error || "Failed to submit application");
       }
 
+      const data = await res.json();
+      setEditToken(data.edit_token || null);
       setSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err: unknown) {
@@ -179,14 +182,33 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
   }
 
   if (submitted) {
+    const editUrl = editToken
+      ? `${window.location.origin}/application/edit?token=${editToken}`
+      : null;
+
     return (
-      <div className="text-center py-16">
+      <div className="text-center py-16 max-w-lg mx-auto">
         <div className="text-5xl mb-4">✅</div>
         <h2 className="text-2xl font-bold mb-2">Application Submitted!</h2>
-        <p className="text-gray-500 max-w-md mx-auto">
+        <p className="text-gray-500 mb-6">
           Thank you for applying. We will review your application and get back to
           you as soon as possible.
         </p>
+        {editUrl && (
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-5 text-left">
+            <p className="font-semibold text-gray-800 mb-1">Need to make a change?</p>
+            <p className="text-gray-500 text-sm mb-4">
+              Save the link below — you have <strong>7 days</strong> to update your application.
+            </p>
+            <a
+              href={editUrl}
+              className="inline-block bg-green-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
+            >
+              Edit My Application
+            </a>
+            <p className="text-xs text-gray-400 mt-3 break-all">{editUrl}</p>
+          </div>
+        )}
       </div>
     );
   }
