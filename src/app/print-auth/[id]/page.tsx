@@ -28,12 +28,6 @@ export default function PrintAuthPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const pw = sessionStorage.getItem("admin_authenticated");
-    if (!pw || pw !== process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      window.location.href = `/admin/applications/${id}`;
-      return;
-    }
-
     const url = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/applications?id=eq.${id}&select=*,listing:listings(address,city,state,zip,monthly_rent)`;
     fetch(url, {
       headers: {
