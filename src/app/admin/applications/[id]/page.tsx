@@ -61,7 +61,7 @@ export default async function ApplicationDetail({
         </div>
         <div className="flex items-center gap-3">
           <Link
-            href={`/admin/applications/${id}/print-auth`}
+            href={`/print-auth/${id}`}
             target="_blank"
             className="text-sm border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors flex items-center gap-1"
           >
