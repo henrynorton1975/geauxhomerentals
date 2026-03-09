@@ -59,7 +59,16 @@ export default async function ApplicationDetail({
             </p>
           )}
         </div>
-        <StatusUpdater applicationId={id} currentStatus={app.status} />
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/admin/applications/${id}/print-auth`}
+            target="_blank"
+            className="text-sm border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors flex items-center gap-1"
+          >
+            🖨️ Print Authorization
+          </Link>
+          <StatusUpdater applicationId={id} currentStatus={app.status} />
+        </div>
       </div>
 
       {/* Income Check */}
