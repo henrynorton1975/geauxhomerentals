@@ -32,43 +32,50 @@ export default async function PrintAuthorizationPage({
       });
 
   return (
-    <html>
-      <head>
-        <title>Authorization — {app.full_name as string}</title>
-        <style>{`
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body {
-            font-family: Georgia, 'Times New Roman', serif;
-            font-size: 13px;
-            line-height: 1.7;
-            color: #111;
-            background: white;
-            padding: 60px;
-            max-width: 780px;
-            margin: 0 auto;
-          }
-          .header { text-align: center; margin-bottom: 36px; border-bottom: 2px solid #111; padding-bottom: 20px; }
-          .header h1 { font-size: 20px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase; }
-          .header p { font-size: 12px; color: #555; margin-top: 4px; }
-          .section { margin-bottom: 28px; }
-          .section-title { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-bottom: 8px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-          .field-row { display: flex; gap: 8px; margin-bottom: 6px; }
-          .field-label { font-weight: bold; min-width: 180px; color: #333; }
-          .auth-text { background: #f9f9f9; border: 1px solid #ddd; padding: 16px 20px; font-style: italic; line-height: 1.8; margin: 12px 0; }
-          .signature-box { border: 1px solid #aaa; padding: 20px 24px; margin-top: 16px; background: #fafafa; }
-          .sig-name { font-family: 'Palatino', Georgia, serif; font-size: 22px; font-style: italic; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 10px; }
-          .sig-meta { font-size: 11px; color: #555; display: flex; gap: 40px; }
-          .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #ddd; font-size: 11px; color: #888; text-align: center; }
-          .print-btn { position: fixed; top: 20px; right: 20px; background: #16a34a; color: white; border: none; padding: 10px 20px; font-size: 14px; border-radius: 6px; cursor: pointer; font-family: Arial, sans-serif; }
-          @media print {
-            .print-btn { display: none; }
-            body { padding: 40px; }
-          }
-        `}</style>
-      </head>
-      <body>
-        <a href="javascript:window.print()" className="print-btn" style={{textDecoration:'none'}}>🖨️ Print</a>
+    <>
+      <style>{`
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          font-family: Georgia, 'Times New Roman', serif;
+          font-size: 13px;
+          line-height: 1.7;
+          color: #111;
+          background: white;
+        }
+        .page {
+          padding: 60px;
+          max-width: 780px;
+          margin: 0 auto;
+        }
+        .header { text-align: center; margin-bottom: 36px; border-bottom: 2px solid #111; padding-bottom: 20px; }
+        .header h1 { font-size: 20px; font-weight: bold; letter-spacing: 0.05em; text-transform: uppercase; }
+        .header p { font-size: 12px; color: #555; margin-top: 4px; }
+        .section { margin-bottom: 28px; }
+        .section-title { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-bottom: 8px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        .field-row { display: flex; gap: 8px; margin-bottom: 6px; }
+        .field-label { font-weight: bold; min-width: 180px; color: #333; }
+        .auth-text { background: #f9f9f9; border: 1px solid #ddd; padding: 16px 20px; font-style: italic; line-height: 1.8; margin: 12px 0; }
+        .signature-box { border: 1px solid #aaa; padding: 20px 24px; margin-top: 16px; background: #fafafa; }
+        .sig-name { font-family: 'Palatino', Georgia, serif; font-size: 22px; font-style: italic; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 10px; }
+        .sig-meta { font-size: 11px; color: #555; display: flex; gap: 40px; flex-wrap: wrap; }
+        .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #ddd; font-size: 11px; color: #888; text-align: center; }
+        .print-btn {
+          position: fixed; top: 20px; right: 20px;
+          background: #16a34a; color: white; border: none;
+          padding: 10px 20px; font-size: 14px; border-radius: 6px;
+          cursor: pointer; font-family: Arial, sans-serif;
+          text-decoration: none; display: inline-block;
+        }
+        .print-btn:hover { background: #15803d; }
+        @media print {
+          .print-btn { display: none !important; }
+          .page { padding: 30px; }
+        }
+      `}</style>
 
+      <a href="javascript:window.print()" className="print-btn">🖨️ Print / Save PDF</a>
+
+      <div className="page">
         <div className="header">
           <h1>Rental Application Authorization</h1>
           <p>Geaux Home Rentals · (225) 330-8416 · geauxhomerentals.com</p>
@@ -119,11 +126,11 @@ export default async function PrintAuthorizationPage({
         </div>
 
         <div className="footer">
-          Application ID: {app.id as string} · Submitted: {new Date(app.created_at as string).toLocaleString()} · Generated: {new Date().toLocaleString()}
+          Application ID: {app.id as string} &nbsp;·&nbsp;
+          Submitted: {new Date(app.created_at as string).toLocaleString()} &nbsp;·&nbsp;
+          Generated: {new Date().toLocaleString()}
         </div>
-
-
-      </body>
-    </html>
+      </div>
+    </>
   );
 }
