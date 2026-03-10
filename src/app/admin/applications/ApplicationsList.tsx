@@ -32,9 +32,10 @@ interface ApplicationsListProps {
 export default function ApplicationsList({ applications, listings }: ApplicationsListProps) {
   const [selectedListing, setSelectedListing] = useState("");
 
+  const active = applications.filter((app) => app.status !== "archived");
   const filtered = selectedListing
-    ? applications.filter((app) => app.listing_id === selectedListing)
-    : applications;
+    ? active.filter((app) => app.listing_id === selectedListing)
+    : active;
 
   return (
     <div>

@@ -12,7 +12,7 @@ export async function PUT(
   const { id } = await params;
   const { status } = await request.json();
 
-  const validStatuses = ["new", "under_review", "approved", "denied", "lease_signed"];
+  const validStatuses = ["new", "under_review", "approved", "denied", "lease_signed", "archived"];
   if (!validStatuses.includes(status)) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }

@@ -22,15 +22,44 @@ export default function StatusUpdater({ applicationId, currentStatus }: { applic
     router.refresh();
   }
 
+  async function archiveApplication() {
+    if (!confirm("Archive this application? It will be hidden from the main list but not deleted.")) return;
+    await fetch(`/api/applications/${applicationId}/status`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "archived" }),
+    });
+    router.push("/admin/applications");
+  }
+
+  if (currentStatus === "archived") {
+    return (
+      <button
+        onClick={() => updateStatus("new")}
+        className="text-sm border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50"
+      >
+        Restore Application
+      </button>
+    );
+  }
+
   return (
-    <select
-      value={currentStatus}
-      onChange={(e) => updateStatus(e.target.value)}
-      className="text-sm border border-gray-300 rounded-lg px-3 py-2"
-    >
-      {STATUSES.map((s) => (
-        <option key={s.value} value={s.value}>{s.label}</option>
-      ))}
-    </select>
+    <div className="flex items-center gap-2">
+      <select
+        value={currentStatus}
+        onChange={(e) => updateStatus(e.target.value)}
+        className="text-sm border border-gray-300 rounded-lg px-3 py-2"
+      >
+        {STATUSES.map((s) => (
+          <option key={s.value} value={s.value}>{s.label}</option>
+        ))}
+      </select>
+      <button
+        onClick={archiveApplication}
+        className="text-sm border border-red-200 text-red-600 rounded-lg px-3 py-2 hover:bg-red-50 transition-colors"
+      >
+        Archive
+      </button>
+    </div>
   );
 }
