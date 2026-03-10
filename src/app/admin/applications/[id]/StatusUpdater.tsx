@@ -13,23 +13,31 @@ const STATUSES = [
 export default function StatusUpdater({ applicationId, currentStatus }: { applicationId: string; currentStatus: string }) {
   const router = useRouter();
 
+  function getAuthHeaders() {
+    const adminPw = sessionStorage.getItem("admin_authenticated") || "";
+    return {
+      "Content-Type": "application/json",
+      "x-admin-password": adminPw,
+    };
+  }
+
   async function updateStatus(newStatus: string) {
-    await fetch(`/api/applications/${applicationId}/status`, {
+    const res = await fetch(`/api/applications/${applicationId}/status`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ status: newStatus }),
     });
-    router.refresh();
+    if (res.ok) router.refresh();
   }
 
   async function archiveApplication() {
     if (!confirm("Archive this application? It will be hidden from the main list but not deleted.")) return;
-    await fetch(`/api/applications/${applicationId}/status`, {
+    const res = await fetch(`/api/applications/${applicationId}/status`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ status: "archived" }),
     });
-    router.push("/admin/applications");
+    if (res.ok) router.push("/admin/applications");
   }
 
   if (currentStatus === "archived") {

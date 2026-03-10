@@ -7,8 +7,13 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authError = requireAuth(request);
-  if (authError) return authError;
+  // Accept either Bearer API key or admin password header
+  const adminPw = request.headers.get("x-admin-password");
+  const isAdminAuth = adminPw && adminPw === process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+  if (!isAdminAuth) {
+    const authError = requireAuth(request);
+    if (authError) return authError;
+  }
   const { id } = await params;
   const { status } = await request.json();
 
