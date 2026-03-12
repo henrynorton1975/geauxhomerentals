@@ -93,6 +93,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
   );
 
   const [consent, setConsent] = useState(false);
+  const [smsConsent, setSmsConsent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -154,6 +155,7 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
       additional_info: get("additional_info") || null,
       // Section 11
       consent_agreed: consent,
+      sms_consent: smsConsent,
       signature_name: get("signature_name"),
       signature_date: new Date().toISOString(),
     };
@@ -651,6 +653,18 @@ export default function ApplicationForm({ listingId }: { listingId: string }) {
             className="w-5 h-5 mt-0.5"
           />
           <span>I agree to the above authorization<RequiredStar /></span>
+        </label>
+
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={smsConsent}
+            onChange={(e) => setSmsConsent(e.target.checked)}
+            className="w-5 h-5 mt-0.5"
+          />
+          <span className="text-sm text-gray-700">
+            I agree to receive SMS updates about my application from Geaux Home Rentals. Message &amp; data rates may apply. Reply STOP to unsubscribe.
+          </span>
         </label>
 
         <div>
